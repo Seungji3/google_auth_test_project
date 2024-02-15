@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:firebase_core/firebase_core.dart';
+import 'package:project_auth_test/page/signin/signIn_page.dart';
+import 'package:project_auth_test/page/home/home_page.dart';
 import 'firebase_options.dart';
 
 Future<void> main() async {
@@ -16,6 +18,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return MaterialApp(
+      title: 'Main',
+      initialRoute: '/signIn',
+      routes: {
+        '/': (context) => HomePage(),
+        '/signIn': (context) => SignInPage(),
+      },
+    );
   }
 }
