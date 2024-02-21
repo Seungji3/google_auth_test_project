@@ -12,71 +12,30 @@ class SignInPage extends StatefulWidget {
 }
 
 class _SignInPageState extends State<SignInPage> {
-  // ValueNotifier userCredential = ValueNotifier('');
-
   var currentDisplayName = '';
   var currentEmail = '';
   var currentPhotoUrl = '';
 
   @override
   void setState(VoidCallback fn) {
-    // TODO: implement setState
     super.setState(fn);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        body: Center(
+            child: Container(
+      child: Column(
         children: [
-          Center(
-            child: TextButton(
-              child: Text('Google Login'),
-              onPressed: signInWithGoogle,
-            ),
-          ),
-          Center(
-              child: Container(
-            child: Column(
-              children: [
-                Image.network(currentPhotoUrl),
-                Text(currentDisplayName),
-                Text(currentEmail),
-              ],
-            ),
-          ))
+          if (currentPhotoUrl.isEmpty)
+            const Icon(Icons.person)
+          else
+            Image.network(currentPhotoUrl, width: 40),
+          Text(currentDisplayName),
+          Text(currentEmail),
         ],
       ),
-    );
-  }
-
-  Future<UserCredential> signInWithGoogle() async {
-    // Trigger the authentication flow
-    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-
-    // Obtain the auth details from the request
-    final GoogleSignInAuthentication? googleAuth =
-        await googleUser?.authentication;
-
-    // Create a new credential
-    final credential = GoogleAuthProvider.credential(
-      accessToken: googleAuth?.accessToken,
-      idToken: googleAuth?.idToken,
-    );
-
-    setState(() {
-      if (googleUser != null) {
-        currentDisplayName = googleUser.displayName!;
-        currentEmail = googleUser.email;
-        currentPhotoUrl = googleUser.photoUrl!;
-        Navigator.pushNamed(context, '/');
-        ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('${googleUser.displayName}님 로그인 되었습니다')));
-      }
-    });
-
-    // Once signed in, return the UserCredential
-    return await FirebaseAuth.instance.signInWithCredential(credential);
+    )));
   }
 }
